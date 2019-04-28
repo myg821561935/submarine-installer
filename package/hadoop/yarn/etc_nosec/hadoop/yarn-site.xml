@@ -142,25 +142,27 @@
   </property>
 
   <!-- ResourceManager security configs -->
+<!--
   <property>
     <name>yarn.resourcemanager.keytab</name>
-    <value>YARN_KEYTAB_LOCATION_REPLACE</value> <!-- path to the YARN keytab -->
+    <value>YARN_KEYTAB_LOCATION_REPLACE</value> 
   </property>
   <property>
     <name>yarn.resourcemanager.principal</name>
     <value>yarn/_HOST@${local.realm}</value>
   </property>
-
+-->
   <!-- NodeManager security configs -->
+<!--
   <property>
     <name>yarn.nodemanager.keytab</name>
-    <value>YARN_KEYTAB_LOCATION_REPLACE</value> <!-- path to the YARN keytab -->
+    <value>YARN_KEYTAB_LOCATION_REPLACE</value>
   </property>
   <property>
     <name>yarn.nodemanager.principal</name>
     <value>yarn/_HOST@${local.realm}</value>
   </property>
-
+-->
   <!--container executor configuration-->
   <property>
     <name>yarn.nodemanager.container-executor.class</name>
@@ -324,8 +326,8 @@
   </property>
   <property>
     <name>hadoop.http.authentication.type</name>
-    <!--<value>simple</value>-->
-    <value>kerberos</value>
+    <value>true</value>
+    <!--<value>kerberos</value>-->
   </property>
 
 	<property>
@@ -359,10 +361,10 @@
 
   <property>
     <name>yarn.timeline-service.http-authentication.type</name>
-    <!--<value>simple</value>-->
-    <value>kerberos</value>
+    <value>simple</value>
+    <!--<value>kerberos</value>-->
   </property>
-
+<!--
   <property>
     <name>yarn.timeline-service.principal</name>
     <value>yarn/_HOST@${local.realm}</value>
@@ -382,7 +384,7 @@
     <name>yarn.timeline-service.http-authentication.kerberos.keytab</name>
     <value>HTTP_KEYTAB_LOCATION_REPLACE</value>
   </property>
-
+-->
   <property>
     <name>yarn.timeline-service.hostname</name>
     <value>YARN_TIMELINE_HOST_REPLACE</value>
@@ -544,7 +546,7 @@
     <!--<value>5353</value>-->
     <value>YARN_REGISTRY_DNS_HOST_PORT_REPLACE</value>
   </property>
-  
+ <!--
   <property>
     <description>
       The Kerberos keytab file to be used for spnego filter for the NM web interface.
@@ -576,7 +578,7 @@
     <name>yarn.resourcemanager.webapp.spnego-principal</name>
     <value>HTTP/_HOST@${local.realm}</value>
   </property>
-
+-->
   <!-- cgroup configuration -->
   <property>
     <name>yarn.nodemanager.linux-container-executor.resources-handler.class</name>

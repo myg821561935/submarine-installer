@@ -32,6 +32,7 @@
     <name>mapreduce.jobhistory.webapp.address</name>
     <value>YARN_JOB_HISTORY_HOST_REPLACE:19888</value>
   </property>
+<!--
   <property>
     <name>mapreduce.jobhistory.keytab</name>
     <value>MAPRED_KEYTAB_LOCATION_REPLACE</value>
@@ -40,7 +41,7 @@
     <name>mapreduce.jobhistory.principal</name>
     <value>mapred/_HOST@${local.realm}</value>
   </property>
-
+-->
   <!--memory configuration-->
   <property>
     <name>yarn.app.mapreduce.am.resource.mb</name>
