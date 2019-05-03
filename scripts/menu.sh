@@ -505,7 +505,11 @@ menu_process()
       read -r myselect
       if [[ "$myselect" = "y" || "$myselect" = "Y" ]]
       then
-        install_yarn
+	if [[ "${YARN_SECURITY}" = "true" ]];then
+          install_yarn
+	else
+	  install_yarn_nosec
+	fi
       fi
     ;;
     "7-2")
@@ -513,7 +517,11 @@ menu_process()
       read -r myselect
       if [[ "$myselect" = "y" || "$myselect" = "Y" ]]
       then
-        install_yarn_container_executor
+        if [[ "${YARN_SECURITY}" = "true" ]];then
+          install_yarn_container_executor
+        else
+          install_yarn_container_executor_nosec
+        fi
       fi
     ;;
     "7-3")
@@ -521,7 +529,11 @@ menu_process()
       read -r myselect
       if [[ "$myselect" = "y" || "$myselect" = "Y" ]]
       then
-        install_timeline_server
+        if [[ "${YARN_SECURITY}" = "true" ]];then
+          install_timeline_server_nosec
+        else
+          install_timeline_server
+        fi
       fi
     ;;
   esac
