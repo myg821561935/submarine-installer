@@ -78,32 +78,32 @@ function check_install_conf()
   fi
 
   # Check if it is empty
-  if [ -z "${LOCAL_REALM}" ]; then
+  if [[ "${YARN_SECURITY}"="true" && -z "${LOCAL_REALM}" ]]; then
     echo "LOCAL_REALM=[$LOCAL_REALM] can not be empty! "
     exit_install
   fi
 
-  if [ -z "${HADOOP_KEYTAB_LOCATION}" ]; then
+  if [[ "${YARN_SECURITY}"="true" && -z "${HADOOP_KEYTAB_LOCATION}" ]]; then
     echo "HADOOP_KEYTAB_LOCATION=[$HADOOP_KEYTAB_LOCATION] can not be empty! "
     exit_install
   fi
 
-  if [ -z "${HADOOP_PRINCIPAL}" ]; then
+  if [[ "${YARN_SECURITY}"="true" && -z "${HADOOP_PRINCIPAL}" ]]; then
     echo "HADOOP_PRINCIPAL=[$HADOOP_PRINCIPAL] can not be empty! "
     exit_install
   fi
 
-  if [ -z "${MAPRED_KEYTAB_LOCATION}" ]; then
+  if [[ "${YARN_SECURITY}"="true" && -z "${MAPRED_KEYTAB_LOCATION}" ]]; then
     echo "MAPRED_KEYTAB_LOCATION=[$MAPRED_KEYTAB_LOCATION] can not be empty! "
     exit_install
   fi
 
-  if [ -z "${YARN_KEYTAB_LOCATION}" ]; then
+  if [[ "${YARN_SECURITY}"="true" && -z "${YARN_KEYTAB_LOCATION}" ]]; then
     echo "YARN_KEYTAB_LOCATION=[$YARN_KEYTAB_LOCATION] can not be empty! "
     exit_install
   fi
 
-  if [ -z "${HTTP_KEYTAB_LOCATION}" ]; then
+  if [[ "${YARN_SECURITY}"="true" && -z "${HTTP_KEYTAB_LOCATION}" ]]; then
     echo "HTTP_KEYTAB_LOCATION=[$HTTP_KEYTAB_LOCATION] can not be empty! "
     exit_install
   fi
