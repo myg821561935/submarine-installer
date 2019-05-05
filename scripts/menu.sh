@@ -375,8 +375,10 @@ menu_process()
       then
         if [[ "${YARN_SECURITY}" = "true" ]];then
           install_yarn
-        else
+        elif [[ "${YARN_SECURITY}" = "false" ]];then
           install_yarn_nosec
+	else
+	  echo "the SECURITY Value is not support !!!"
         fi
       fi
     ;;
@@ -511,8 +513,10 @@ menu_process()
       then
 	if [[ "${YARN_SECURITY}" = "true" ]];then
           install_yarn
-	else
+	elif [[ "${YARN_SECURITY}" = "false" ]]
 	  install_yarn_nosec
+	else
+	  echo "the SECURITY Value is not support !!!"
 	fi
       fi
     ;;
@@ -523,8 +527,10 @@ menu_process()
       then
         if [[ "${YARN_SECURITY}" = "true" ]];then
           install_yarn_container_executor
-        else
+        elif [[ "${YARN_SECURITY}" = "false" ]];then
           install_yarn_container_executor_nosec
+	else
+	  echo "the SECURITY Value is not support !!!" 
         fi
       fi
     ;;
@@ -534,9 +540,11 @@ menu_process()
       if [[ "$myselect" = "y" || "$myselect" = "Y" ]]
       then
         if [[ "${YARN_SECURITY}" = "true" ]];then
-          install_timeline_server_nosec
-        else
           install_timeline_server
+        elif [[ "${YARN_SECURITY}" = "false" ]];then
+          install_timeline_server_nosec
+	else
+           echo "the SECURITY Value is not support !!!"
         fi
       fi
     ;;
