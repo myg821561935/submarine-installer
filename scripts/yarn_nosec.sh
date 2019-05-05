@@ -63,10 +63,10 @@ function install_yarn_nosec()
 function initialize_temp()
 {
   mkdir -p "${INSTALL_TEMP_DIR}/hadoop"
-  \cp -rf "${PACKAGE_DIR}/hadoop/yarn_nosec" "${INSTALL_TEMP_DIR}/hadoop"
+  \cp -rf "${PACKAGE_DIR}/hadoop/yarn_nosec" "${INSTALL_TEMP_DIR}/hadoop/yarn"
   isGpuEnabled=$(nvidia-smi)
   if [[ -n "$isGpuEnabled" ]]; then
-    python ${SCRIPTS_DIR}/xmlcombine.py ${PACKAGE_DIR}/hadoop/yarn_nosec/etc/hadoop/yarn-site.xml ${PACKAGE_DIR}/hadoop/yarn_nosec/etc/hadoop/gpu/yarn-site-gpu.xml > "${INSTALL_TEMP_DIR}/hadoop/yarn_nosec/etc/hadoop/yarn-site.xml"
+    python ${SCRIPTS_DIR}/xmlcombine.py ${PACKAGE_DIR}/hadoop/yarn_nosec/etc/hadoop/yarn-site.xml ${PACKAGE_DIR}/hadoop/yarn_nosec/etc/hadoop/gpu/yarn-site-gpu.xml > "${INSTALL_TEMP_DIR}/hadoop/yarn/etc/hadoop/yarn-site.xml"
   fi
   chown -R ${HADOOP_SETUP_USER} "${INSTALL_TEMP_DIR}/hadoop"
 }
