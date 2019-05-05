@@ -251,7 +251,7 @@ function install_yarn_rm_nm_nosec()
   cp -f "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/core-site.xml" "${HADOOP_HOME}/etc/hadoop/"
   cp -f "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/hdfs-site.xml" "${HADOOP_HOME}/etc/hadoop/"
 
-  install_yarn_container_executor
+  install_yarn_container_executor_nosec
 }
 
 function install_spark_suffle_nosec() {
