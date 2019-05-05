@@ -373,7 +373,11 @@ menu_process()
       read -r myselect
       if [[ "$myselect" = "y" || "$myselect" = "Y" ]]
       then
-        install_yarn
+        if [[ "${YARN_SECURITY}" = "true" ]];then
+          install_yarn
+        else
+          install_yarn_nosec
+        fi
       fi
     ;;
 # uninstall component

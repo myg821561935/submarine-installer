@@ -20,7 +20,7 @@
 ## @stability    stable
 function install_yarn_nosec()
 {
-  initialize_temp
+  initialize_temp_nosec
 
   host=$(hostname)
   index=$(indexByRMHosts "${host}")
@@ -47,20 +47,20 @@ function install_yarn_nosec()
   install_lzo_native_nosec
 
   # copy file
-  cp -f "$INSTALL_TEMP_DIR/hadoop/yarn_nosec/etc/hadoop/yarn-site.xml" "${HADOOP_HOME}/etc/hadoop/"
-  cp -f "$INSTALL_TEMP_DIR/hadoop/yarn_nosec/etc/hadoop/mapred-site.xml" "${HADOOP_HOME}/etc/hadoop/"
-  cp -f "$INSTALL_TEMP_DIR/hadoop/yarn_nosec/etc/hadoop/core-site.xml" "${HADOOP_HOME}/etc/hadoop/"
-  cp -f "$INSTALL_TEMP_DIR/hadoop/yarn_nosec/etc/hadoop/hdfs-site.xml" "${HADOOP_HOME}/etc/hadoop/"
-  cp -f "$INSTALL_TEMP_DIR/hadoop/yarn_nosec/etc/hadoop/capacity-scheduler.xml" "${HADOOP_HOME}/etc/hadoop/"
-  cp -f "$INSTALL_TEMP_DIR/hadoop/yarn_nosec/etc/hadoop/resource-types.xml" "${HADOOP_HOME}/etc/hadoop/"
-  cp -f "$INSTALL_TEMP_DIR/hadoop/yarn_nosec/etc/hadoop/log4j.properties" "${HADOOP_HOME}/etc/hadoop/"
+  cp -f "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/yarn-site.xml" "${HADOOP_HOME}/etc/hadoop/"
+  cp -f "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/mapred-site.xml" "${HADOOP_HOME}/etc/hadoop/"
+  cp -f "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/core-site.xml" "${HADOOP_HOME}/etc/hadoop/"
+  cp -f "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/hdfs-site.xml" "${HADOOP_HOME}/etc/hadoop/"
+  cp -f "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/capacity-scheduler.xml" "${HADOOP_HOME}/etc/hadoop/"
+  cp -f "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/resource-types.xml" "${HADOOP_HOME}/etc/hadoop/"
+  cp -f "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/log4j.properties" "${HADOOP_HOME}/etc/hadoop/"
   chown "${HADOOP_SETUP_USER}":yarn "${HADOOP_HOME}"/etc/hadoop/*
 }
 
 ## @description  Initialize tmp dir for installation.
 ## @audience     public
 ## @stability    stable
-function initialize_temp()
+function initialize_temp_nosec()
 {
   mkdir -p "${INSTALL_TEMP_DIR}/hadoop"
   \cp -rf "${PACKAGE_DIR}/hadoop/yarn_nosec" "${INSTALL_TEMP_DIR}/hadoop/yarn"
@@ -171,17 +171,17 @@ function install_yarn_rm_nm_nosec()
   escape_fs_defaults=${FS_DEFAULTFS//$find/$replace}
 
   # container-executor.cfg`
-  sed -i "s/YARN_NODEMANAGER_LOCAL_DIRS_REPLACE/${escape_yarn_nodemanager_local_dirs}/g" "$INSTALL_TEMP_DIR/hadoop/yarn_nosec/etc/hadoop/container-executor.cfg"
-  sed -i "s/YARN_NODEMANAGER_LOG_DIRS_REPLACE/${escape_yarn_nodemanager_log_dirs}/g" "$INSTALL_TEMP_DIR/hadoop/yarn_nosec/etc/hadoop/container-executor.cfg"
-  sed -i "s/DOCKER_REGISTRY_REPLACE/${DOCKER_REGISTRY}/g" "$INSTALL_TEMP_DIR/hadoop/yarn_nosec/etc/hadoop/container-executor.cfg"
-  sed -i "s/CALICO_NETWORK_NAME_REPLACE/${CALICO_NETWORK_NAME}/g" "$INSTALL_TEMP_DIR/hadoop/yarn_nosec/etc/hadoop/container-executor.cfg"
-  sed -i "s/YARN_HIERARCHY_REPLACE/${escape_yarn_hierarchy}/g" "$INSTALL_TEMP_DIR/hadoop/yarn_nosec/etc/hadoop/container-executor.cfg"
+  sed -i "s/YARN_NODEMANAGER_LOCAL_DIRS_REPLACE/${escape_yarn_nodemanager_local_dirs}/g" "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/container-executor.cfg"
+  sed -i "s/YARN_NODEMANAGER_LOG_DIRS_REPLACE/${escape_yarn_nodemanager_log_dirs}/g" "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/container-executor.cfg"
+  sed -i "s/DOCKER_REGISTRY_REPLACE/${DOCKER_REGISTRY}/g" "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/container-executor.cfg"
+  sed -i "s/CALICO_NETWORK_NAME_REPLACE/${CALICO_NETWORK_NAME}/g" "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/container-executor.cfg"
+  sed -i "s/YARN_HIERARCHY_REPLACE/${escape_yarn_hierarchy}/g" "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/container-executor.cfg"
 
   # enable cgroup for yarn
   . "${PACKAGE_DIR}/submarine/submarine.sh"
 
   # Delete the ASF license comment in the container-executor.cfg file, otherwise it will cause a cfg format error.
-  sed -i '1,16d' "$INSTALL_TEMP_DIR/hadoop/yarn_nosec/etc/hadoop/container-executor.cfg"
+  sed -i '1,16d' "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/container-executor.cfg"
   
   executor_dir=$(dirname "${YARN_CONTAINER_EXECUTOR_PATH}")
   executor_conf_dir=$(dirname "${executor_dir}")/etc/hadoop
@@ -189,14 +189,14 @@ function install_yarn_rm_nm_nosec()
     sudo mkdir -p "${executor_conf_dir}"
   fi
 
-  cp -f "$INSTALL_TEMP_DIR/hadoop/yarn_nosec/etc/hadoop/container-executor.cfg" "${executor_conf_dir}" 
+  cp -f "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/container-executor.cfg" "${executor_conf_dir}" 
 
   # yarn-site.xml
-  sed -i "s/YARN_RESOURCE_MANAGER_HOSTS1_REPLACE/${YARN_RESOURCE_MANAGER_HOSTS[0]}/g" "$INSTALL_TEMP_DIR/hadoop/yarn_nosec/etc/hadoop/yarn-site.xml"
-  sed -i "s/YARN_RESOURCE_MANAGER_HOSTS2_REPLACE/${YARN_RESOURCE_MANAGER_HOSTS[1]}/g" "$INSTALL_TEMP_DIR/hadoop/yarn_nosec/etc/hadoop/yarn-site.xml"
-  sed -i "s/LOCAL_CLUSTER_ID_REPLACE/${LOCAL_CLUSTER_ID}/g" "$INSTALL_TEMP_DIR/hadoop/yarn_nosec/etc/hadoop/yarn-site.xml"
-  sed -i "s/YARN_NODEMANAGER_LOCAL_DIRS_REPLACE/${escape_yarn_nodemanager_local_dirs}/g" "$INSTALL_TEMP_DIR/hadoop/yarn_nosec/etc/hadoop/yarn-site.xml"
-  sed -i "s/YARN_NODEMANAGER_LOG_DIRS_REPLACE/${escape_yarn_nodemanager_log_dirs}/g" "$INSTALL_TEMP_DIR/hadoop/yarn_nosec/etc/hadoop/yarn-site.xml"
+  sed -i "s/YARN_RESOURCE_MANAGER_HOSTS1_REPLACE/${YARN_RESOURCE_MANAGER_HOSTS[0]}/g" "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/yarn-site.xml"
+  sed -i "s/YARN_RESOURCE_MANAGER_HOSTS2_REPLACE/${YARN_RESOURCE_MANAGER_HOSTS[1]}/g" "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/yarn-site.xml"
+  sed -i "s/LOCAL_CLUSTER_ID_REPLACE/${LOCAL_CLUSTER_ID}/g" "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/yarn-site.xml"
+  sed -i "s/YARN_NODEMANAGER_LOCAL_DIRS_REPLACE/${escape_yarn_nodemanager_local_dirs}/g" "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/yarn-site.xml"
+  sed -i "s/YARN_NODEMANAGER_LOG_DIRS_REPLACE/${escape_yarn_nodemanager_log_dirs}/g" "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/yarn-site.xml"
   # Make nodemanager local dirs if the host is not in YARN_NODE_MANAGER_EXCLUDE_HOSTS
   index=$(indexOfNMExcludeHosts "${host}")
   if [ -z "$index" ]; then
@@ -222,10 +222,10 @@ function install_yarn_rm_nm_nosec()
     done
   fi
  
-  sed -i "s/YARN_ZK_ADDRESS_REPLACE/${YARN_ZK_ADDRESS}/g" "$INSTALL_TEMP_DIR/hadoop/yarn_nosec/etc/hadoop/yarn-site.xml"
-  sed -i "s/CALICO_NETWORK_NAME_REPLACE/${CALICO_NETWORK_NAME}/g" "$INSTALL_TEMP_DIR/hadoop/yarn_nosec/etc/hadoop/yarn-site.xml"
+  sed -i "s/YARN_ZK_ADDRESS_REPLACE/${YARN_ZK_ADDRESS}/g" "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/yarn-site.xml"
+  sed -i "s/CALICO_NETWORK_NAME_REPLACE/${CALICO_NETWORK_NAME}/g" "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/yarn-site.xml"
 
-  sed -i "s/YARN_RESOURCEMANAGER_NODES_EXCLUDE_PATH_REPLACE/${escape_yarn_nodemanager_nodes_exclude_path}/g" "$INSTALL_TEMP_DIR/hadoop/yarn_nosec/etc/hadoop/yarn-site.xml"
+  sed -i "s/YARN_RESOURCEMANAGER_NODES_EXCLUDE_PATH_REPLACE/${escape_yarn_nodemanager_nodes_exclude_path}/g" "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/yarn-site.xml"
   node_exclude_dir=$(dirname "${YARN_RESOURCEMANAGER_NODES_EXCLUDE_PATH}")
   if [[ ! -d "${node_exclude_dir}" ]]; then
     mkdir -p "${YARN_RESOURCEMANAGER_NODES_EXCLUDE_PATH}"
@@ -235,21 +235,21 @@ function install_yarn_rm_nm_nosec()
     chmod 777 "${YARN_RESOURCEMANAGER_NODES_EXCLUDE_PATH}"
   fi
 
-  sed -i "s/YARN_NODEMANAGER_RECOVERY_DIR_REPLACE/${escape_yarn_nodemanager_recovery_dir}/g" "$INSTALL_TEMP_DIR/hadoop/yarn_nosec/etc/hadoop/yarn-site.xml"
+  sed -i "s/YARN_NODEMANAGER_RECOVERY_DIR_REPLACE/${escape_yarn_nodemanager_recovery_dir}/g" "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/yarn-site.xml"
   mkdir -p "${YARN_NODEMANAGER_RECOVERY_DIR}"
   chmod 777 "${YARN_NODEMANAGER_RECOVERY_DIR}"
   
   # core-site.xml
-  sed -i "s/YARN_ZK_ADDRESS_REPLACE/${YARN_ZK_ADDRESS}/g" "$INSTALL_TEMP_DIR/hadoop/yarn_nosec/etc/hadoop/core-site.xml"
-  sed -i "s/FS_DEFAULTFS_REPLACE/${escape_fs_defaults}/g" "$INSTALL_TEMP_DIR/hadoop/yarn_nosec/etc/hadoop/core-site.xml"
+  sed -i "s/YARN_ZK_ADDRESS_REPLACE/${YARN_ZK_ADDRESS}/g" "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/core-site.xml"
+  sed -i "s/FS_DEFAULTFS_REPLACE/${escape_fs_defaults}/g" "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/core-site.xml"
 
   # WARN: ${HADOOP_HTTP_AUTHENTICATION_SIGNATURE_SECRET_FILE} Can not be empty!
   echo 'hello submarine' > "${HADOOP_HTTP_AUTHENTICATION_SIGNATURE_SECRET_FILE}"
   escape_hadoop_http_authentication_signature_secret_file=${HADOOP_HTTP_AUTHENTICATION_SIGNATURE_SECRET_FILE//$find/$replace}
-  #sed -i "s/HADOOP_HTTP_AUTHENTICATION_SIGNATURE_SECRET_FILE_REPLACE/${escape_hadoop_http_authentication_signature_secret_file}/g" "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/core-site.xml"
+  sed -i "s/HADOOP_HTTP_AUTHENTICATION_SIGNATURE_SECRET_FILE_REPLACE/${escape_hadoop_http_authentication_signature_secret_file}/g" "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/core-site.xml"
 
-  cp -f "$INSTALL_TEMP_DIR/hadoop/yarn_nosec/etc/hadoop/core-site.xml" "${HADOOP_HOME}/etc/hadoop/"
-  cp -f "$INSTALL_TEMP_DIR/hadoop/yarn_nosec/etc/hadoop/hdfs-site.xml" "${HADOOP_HOME}/etc/hadoop/"
+  cp -f "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/core-site.xml" "${HADOOP_HOME}/etc/hadoop/"
+  cp -f "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/hdfs-site.xml" "${HADOOP_HOME}/etc/hadoop/"
 
   install_yarn_container_executor
 }
@@ -275,8 +275,8 @@ function install_mapred_nosec() {
   escape_yarn_app_mapreduce_am_staging_dir=${YARN_APP_MAPREDUCE_AM_STAGING_DIR//$find/$replace}
   escape_fs_defaults=${FS_DEFAULTFS//$find/$replace}
  
-  sed -i "s/FS_DEFAULTFS_REPLACE/${escape_fs_defaults}/g" "$INSTALL_TEMP_DIR/hadoop/yarn_nosec/etc/hadoop/mapred-site.xml" 
-  sed -i "s/YARN_APP_MAPREDUCE_AM_STAGING_DIR_REPLACE/${escape_yarn_app_mapreduce_am_staging_dir}/g" "$INSTALL_TEMP_DIR/hadoop/yarn_nosec/etc/hadoop/mapred-site.xml"
+  sed -i "s/FS_DEFAULTFS_REPLACE/${escape_fs_defaults}/g" "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/mapred-site.xml" 
+  sed -i "s/YARN_APP_MAPREDUCE_AM_STAGING_DIR_REPLACE/${escape_yarn_app_mapreduce_am_staging_dir}/g" "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/mapred-site.xml"
   host=$(hostname)
   index=$(indexByRMHosts "${host}")
   if [[ -n "$index" ]]; then
@@ -320,18 +320,18 @@ function install_yarn_sbin_nosec() {
     chmod 775 "${YARN_PID_DIR}"
   fi  
  
-  sed -i "s/YARN_LOG_DIR_REPLACE/${escape_yarn_log_dir}/g" "${INSTALL_TEMP_DIR}/hadoop/yarn_nosec/etc/hadoop/hadoop-env.sh"
-  sed -i "s/YARN_PID_DIR_REPLACE/${escape_yarn_pid_dir}/g" "${INSTALL_TEMP_DIR}/hadoop/yarn_nosec/etc/hadoop/hadoop-env.sh" 
-  sed -i "s/JAVA_HOME_REPLACE/${escape_java_home}/g" "${INSTALL_TEMP_DIR}/hadoop/yarn_nosec/etc/hadoop/hadoop-env.sh"
-  sed -i "s/HADOOP_HOME_REPLACE/${escape_hadoop_home}/g" "${INSTALL_TEMP_DIR}/hadoop/yarn_nosec/etc/hadoop/hadoop-env.sh"
-  sed -i "s/GC_LOG_DIR_REPLACE/${escape_yarn_gc_log_dir}/g" "${INSTALL_TEMP_DIR}/hadoop/yarn_nosec/etc/hadoop/hadoop-env.sh"
-  cp -R "${INSTALL_TEMP_DIR}/hadoop/yarn_nosec/etc/hadoop/hadoop-env.sh" "${HADOOP_HOME}/etc/hadoop/"
+  sed -i "s/YARN_LOG_DIR_REPLACE/${escape_yarn_log_dir}/g" "${INSTALL_TEMP_DIR}/hadoop/yarn/etc/hadoop/hadoop-env.sh"
+  sed -i "s/YARN_PID_DIR_REPLACE/${escape_yarn_pid_dir}/g" "${INSTALL_TEMP_DIR}/hadoop/yarn/etc/hadoop/hadoop-env.sh" 
+  sed -i "s/JAVA_HOME_REPLACE/${escape_java_home}/g" "${INSTALL_TEMP_DIR}/hadoop/yarn/etc/hadoop/hadoop-env.sh"
+  sed -i "s/HADOOP_HOME_REPLACE/${escape_hadoop_home}/g" "${INSTALL_TEMP_DIR}/hadoop/yarn/etc/hadoop/hadoop-env.sh"
+  sed -i "s/GC_LOG_DIR_REPLACE/${escape_yarn_gc_log_dir}/g" "${INSTALL_TEMP_DIR}/hadoop/yarn/etc/hadoop/hadoop-env.sh"
+  cp -R "${INSTALL_TEMP_DIR}/hadoop/yarn/etc/hadoop/hadoop-env.sh" "${HADOOP_HOME}/etc/hadoop/"
 
-  sed -i "s/GC_LOG_DIR_REPLACE/${escape_yarn_gc_log_dir}/g" "${INSTALL_TEMP_DIR}/hadoop/yarn_nosec/etc/hadoop/yarn-env.sh"
-  cp -R "${INSTALL_TEMP_DIR}/hadoop/yarn_nosec/etc/hadoop/yarn-env.sh" "${HADOOP_HOME}/etc/hadoop/"
+  sed -i "s/GC_LOG_DIR_REPLACE/${escape_yarn_gc_log_dir}/g" "${INSTALL_TEMP_DIR}/hadoop/yarn/etc/hadoop/yarn-env.sh"
+  cp -R "${INSTALL_TEMP_DIR}/hadoop/yarn/etc/hadoop/yarn-env.sh" "${HADOOP_HOME}/etc/hadoop/"
 
-  sed -i "s/GC_LOG_DIR_REPLACE/${escape_yarn_gc_log_dir}/g" "${INSTALL_TEMP_DIR}/hadoop/yarn_nosec/etc/hadoop/mapred-env.sh"
-  cp -R "${INSTALL_TEMP_DIR}/hadoop/yarn_nosec/etc/hadoop/mapred-env.sh" "${HADOOP_HOME}/etc/hadoop/"
+  sed -i "s/GC_LOG_DIR_REPLACE/${escape_yarn_gc_log_dir}/g" "${INSTALL_TEMP_DIR}/hadoop/yarn/etc/hadoop/mapred-env.sh"
+  cp -R "${INSTALL_TEMP_DIR}/hadoop/yarn/etc/hadoop/mapred-env.sh" "${HADOOP_HOME}/etc/hadoop/"
 
 cat<<HELPINFO
 You can use the start/stop script in the ${HADOOP_HOME}/sbin/ directory to start or stop the various services of the yarn.
@@ -357,12 +357,12 @@ HELPINFO
 }
 
 function install_registery_dns_nosec() {
-  sed -i "s/YARN_REGISTRY_DNS_HOST_REPLACE/${YARN_REGISTRY_DNS_HOST}/g" "$INSTALL_TEMP_DIR/hadoop/yarn_nosec/etc/hadoop/yarn-site.xml"
-  sed -i "s/YARN_REGISTRY_DNS_HOST_PORT_REPLACE/${YARN_REGISTRY_DNS_HOST_PORT}/g" "$INSTALL_TEMP_DIR/hadoop/yarn_nosec/etc/hadoop/yarn-site.xml"
+  sed -i "s/YARN_REGISTRY_DNS_HOST_REPLACE/${YARN_REGISTRY_DNS_HOST}/g" "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/yarn-site.xml"
+  sed -i "s/YARN_REGISTRY_DNS_HOST_PORT_REPLACE/${YARN_REGISTRY_DNS_HOST_PORT}/g" "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/yarn-site.xml"
 }
 
 function install_job_history_nosec() {
-  sed -i "s/YARN_JOB_HISTORY_HOST_REPLACE/${YARN_JOB_HISTORY_HOST}/g" "$INSTALL_TEMP_DIR/hadoop/yarn_nosec/etc/hadoop/mapred-site.xml"
+  sed -i "s/YARN_JOB_HISTORY_HOST_REPLACE/${YARN_JOB_HISTORY_HOST}/g" "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/mapred-site.xml"
 }
 
 ## @description  install yarn timeline server
@@ -380,12 +380,12 @@ function install_timeline_server_nosec()
   escape_yarn_timeline_service_leveldb_state_store_path=${YARN_TIMELINE_SERVICE_LEVELDB_STATE_STORE_PATH//$find/$replace}
 
   # set leveldb configuration
-  sed -i "s/YARN_AGGREGATED_LOG_DIR_REPLACE/${escape_aggregated_log_dir}/g" "$INSTALL_TEMP_DIR/hadoop/yarn_nosec/etc/hadoop/yarn-site.xml"
-  sed -i "s/YARN_TIMELINE_SERVICE_HBASE_CONFIGURATION_FILE_REPLACE/${escape_yarn_timeline_service_hbase_configuration_file}/g" "$INSTALL_TEMP_DIR/hadoop/yarn_nosec/etc/hadoop/yarn-site.xml"
+  sed -i "s/YARN_AGGREGATED_LOG_DIR_REPLACE/${escape_aggregated_log_dir}/g" "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/yarn-site.xml"
+  sed -i "s/YARN_TIMELINE_SERVICE_HBASE_CONFIGURATION_FILE_REPLACE/${escape_yarn_timeline_service_hbase_configuration_file}/g" "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/yarn-site.xml"
   # timeline v1.5
-  sed -i "s/YARN_TIMELINE_HOST_REPLACE/${YARN_TIMELINE_HOST}/g" "$INSTALL_TEMP_DIR/hadoop/yarn_nosec/etc/hadoop/yarn-site.xml"
-  sed -i "s/YARN_TIMELINE_SERVICE_LEVELDB_STATE_STORE_PATH_REPLACE/${escape_yarn_timeline_service_leveldb_state_store_path}/g" "$INSTALL_TEMP_DIR/hadoop/yarn_nosec/etc/hadoop/yarn-site.xml"
-  sed -i "s/YARN_TIMELINE_FS_STORE_DIR_REPLACE/${escape_yarn_timeline_fs_store_dir}/g" "$INSTALL_TEMP_DIR/hadoop/yarn_nosec/etc/hadoop/yarn-site.xml"
+  sed -i "s/YARN_TIMELINE_HOST_REPLACE/${YARN_TIMELINE_HOST}/g" "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/yarn-site.xml"
+  sed -i "s/YARN_TIMELINE_SERVICE_LEVELDB_STATE_STORE_PATH_REPLACE/${escape_yarn_timeline_service_leveldb_state_store_path}/g" "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/yarn-site.xml"
+  sed -i "s/YARN_TIMELINE_FS_STORE_DIR_REPLACE/${escape_yarn_timeline_fs_store_dir}/g" "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/yarn-site.xml"
 
   host=$(hostname)
   if [ "x$YARN_TIMELINE_HOST" != "x$host" ]; then

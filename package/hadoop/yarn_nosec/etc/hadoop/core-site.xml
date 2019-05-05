@@ -68,12 +68,10 @@
   </property>
 
   <!-- Authentication for Hadoop HTTP web-consoles -->
-<!--
   <property>
     <name>hadoop.http.filter.initializers</name>
     <value>org.apache.hadoop.security.AuthenticationFilterInitializer</value>
   </property>
--->
   <property>
     <name>hadoop.http.authentication.type</name>
     <value>simple</value>
@@ -83,7 +81,6 @@
     <name>hadoop.http.authentication.token.validity</name>
     <value>36000</value>
   </property>
-<!--
   <property>
     <name>hadoop.http.authentication.signature.secret.file</name>
     <value>HADOOP_HTTP_AUTHENTICATION_SIGNATURE_SECRET_FILE_REPLACE</value>
@@ -93,23 +90,12 @@
       The same secret should be used for JT/NN/DN/TT configurations.
     </description>
   </property>
--->
 
   <property>
     <name>hadoop.http.authentication.simple.anonymous.allowed</name>
     <value>true</value>
   </property>
-<!--
-  <property>
-    <name>hadoop.http.authentication.kerberos.principal</name>
-    <value>HTTP/_HOST@${local.realm}</value>
-  </property>
 
-  <property>
-    <name>hadoop.http.authentication.kerberos.keytab</name>
-    <value>HTTP_KEYTAB_LOCATION_REPLACE</value>
-  </property>
--->
   <property>
     <name>hadoop.tmp.dir</name>
     <value>/tmp/hadoop-${user.name}</value>
