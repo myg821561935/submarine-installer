@@ -376,9 +376,9 @@ menu_process()
         if [[ "${YARN_SECURITY}" = "true" ]];then
           install_yarn
         elif [[ "${YARN_SECURITY}" = "false" ]];then
-          install_yarn_nosec
+          install_yarn_insecure
 	else
-	  echo "the SECURITY Value is not support !!!"
+	  echo "the YARN_SECURITY Value is not support !!!"
         fi
       fi
     ;;
@@ -513,10 +513,10 @@ menu_process()
       then
 	if [[ "${YARN_SECURITY}" = "true" ]];then
           install_yarn
-	elif [[ "${YARN_SECURITY}" = "false" ]]
-	  install_yarn_nosec
+	elif [[ "${YARN_SECURITY}" = "false" ]];then
+	  install_yarn_insecure
 	else
-	  echo "the SECURITY Value is not support !!!"
+	  echo "the YARN_SECURITY Value is not support !!!"
 	fi
       fi
     ;;
@@ -528,9 +528,9 @@ menu_process()
         if [[ "${YARN_SECURITY}" = "true" ]];then
           install_yarn_container_executor
         elif [[ "${YARN_SECURITY}" = "false" ]];then
-          install_yarn_container_executor_nosec
+          install_yarn_container_executor_insecure
 	else
-	  echo "the SECURITY Value is not support !!!" 
+	  echo "the YARN_SECURITY Value is not support !!!" 
         fi
       fi
     ;;
@@ -542,9 +542,9 @@ menu_process()
         if [[ "${YARN_SECURITY}" = "true" ]];then
           install_timeline_server
         elif [[ "${YARN_SECURITY}" = "false" ]];then
-          install_timeline_server_nosec
+          install_timeline_server_insecure
 	else
-           echo "the SECURITY Value is not support !!!"
+           echo "the YARN_SECURITY Value is not support !!!"
         fi
       fi
     ;;

@@ -37,7 +37,7 @@ DOWNLOAD_HTTP=""
 . ${ROOT}/scripts/environment.sh
 . ${ROOT}/scripts/etcd.sh
 . ${ROOT}/scripts/yarn.sh
-. ${ROOT}/scripts/yarn_nosec.sh
+. ${ROOT}/scripts/yarn_insecure.sh
 . ${ROOT}/scripts/menu.sh
 . ${ROOT}/scripts/nvidia.sh
 . ${ROOT}/scripts/nvidia-docker.sh

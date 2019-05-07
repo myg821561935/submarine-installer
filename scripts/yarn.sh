@@ -20,6 +20,10 @@
 ## @stability    stable
 function install_yarn()
 {
+  # base YARN_SECURITY determain which etc is  
+  rm -f ${PACKAGE_DIR}/hadoop/yarn/etc
+  ln -s ${PACKAGE_DIR}/hadoop/yarn/etc_secure ${PACKAGE_DIR}/hadoop/yarn/etc
+  
   initialize_temp
 
   host=$(hostname)

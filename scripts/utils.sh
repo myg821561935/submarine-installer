@@ -64,9 +64,9 @@ function check_install_conf()
 {
   echo "Check if the configuration file configuration is correct ..."
 
-  # check the security value 
+  # check YARN_SECURITY's value 
     if [ -z "${YARN_SECURITY}" ]; then
-    echo "YARN_SECURITY=[$YARN_SECURITY] is empty! please choose true or false "
+    echo "YARN_SECURITY=[$YARN_SECURITY] is empty! please use true or false "
     exit_install
     fi
 
