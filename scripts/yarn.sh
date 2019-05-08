@@ -176,13 +176,15 @@ function install_yarn_rm_nm()
   escape_yarn_nodemanager_recovery_dir=${YARN_NODEMANAGER_RECOVERY_DIR//$find/$replace}
   escape_fs_defaults=${FS_DEFAULTFS//$find/$replace}
   escape_hadoop_http_authentication_signature_secret_file=${HADOOP_HTTP_AUTHENTICATION_SIGNATURE_SECRET_FILE//$find/$replace}
+  escape_hadoop_home=${HADOOP_HOME//$find/$replace}
 
   # container-executor.cfg`
   sed -i "s/YARN_NODEMANAGER_LOCAL_DIRS_REPLACE/${escape_yarn_nodemanager_local_dirs}/g" "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/container-executor.cfg"
   sed -i "s/YARN_NODEMANAGER_LOG_DIRS_REPLACE/${escape_yarn_nodemanager_log_dirs}/g" "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/container-executor.cfg"
   sed -i "s/DOCKER_REGISTRY_REPLACE/${DOCKER_REGISTRY}/g" "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/container-executor.cfg"
-  sed -i "s/CALICO_NETWORK_NAME_REPLACE/${CALICO_NETWORK_NAME}/g" "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/container-executor.cfg"
+  sed -i "s/YARN_DOCKER_ALLOWED_CONTAINER_NETWORKS_REPLACE/${YARN_DOCKER_ALLOWED_CONTAINER_NETWORKS}/g" "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/container-executor.cfg"
   sed -i "s/YARN_HIERARCHY_REPLACE/${escape_yarn_hierarchy}/g" "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/container-executor.cfg"
+  sed -i "s/HADOOP_HOME_REPLACE/${escape_hadoop_home}/g" "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/container-executor.cfg"
 
   # enable cgroup for yarn
   . "${PACKAGE_DIR}/submarine/submarine.sh"
@@ -232,7 +234,8 @@ function install_yarn_rm_nm()
  
   sed -i "s/YARN_ZK_ADDRESS_REPLACE/${YARN_ZK_ADDRESS}/g" "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/yarn-site.xml"
   sed -i "s/YARN_KEYTAB_LOCATION_REPLACE/${escape_yarn_keytab_location}/g" "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/yarn-site.xml"
-  sed -i "s/CALICO_NETWORK_NAME_REPLACE/${CALICO_NETWORK_NAME}/g" "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/yarn-site.xml"
+  sed -i "s/YARN_DOCKER_CONTAINER_DEFAULT_NETWORK_REPLACE/${YARN_DOCKER_CONTAINER_DEFAULT_NETWORK}/g" "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/yarn-site.xml"
+  sed -i "s/YARN_DOCKER_ALLOWED_CONTAINER_NETWORKS_REPLACE/${YARN_DOCKER_ALLOWED_CONTAINER_NETWORKS}/g" "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/yarn-site.xml"
 
   sed -i "s/YARN_RESOURCEMANAGER_NODES_EXCLUDE_PATH_REPLACE/${escape_yarn_nodemanager_nodes_exclude_path}/g" "$INSTALL_TEMP_DIR/hadoop/yarn/etc/hadoop/yarn-site.xml"
   node_exclude_dir=$(dirname "${YARN_RESOURCEMANAGER_NODES_EXCLUDE_PATH}")
